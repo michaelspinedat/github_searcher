@@ -22,7 +22,7 @@ const Searcher = ({ onSubmit }) => {
         placeholder='Octocat'
         size='small'
         sx={{
-          width: '90%'
+          width: '100%'
         }}
         value={valueInput}
         onChange={handleSearcherChange}

@@ -1,6 +1,7 @@
-import { Container } from '@mui/material'
+import { Alert, Container } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Searcher from './components/Searcher'
+import UserCard from './components/UserCard'
 import { getUser } from './services/user'
 
 const defaultUser = 'octocat'
@@ -35,26 +36,37 @@ function App() {
 
   }, [inputUser])
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!userBeenFound)
+        setUserBeenFound(true)
+    }, [2500])
+
+    return () => clearTimeout(timer)
+  }, [userBeenFound])
+
 
   const handleUserChange = input => {
     setInputUser(input)
   }
 
   return (
-    <Container sx={{
-      backgroundColor: 'whitesmoke',
-      width: '80vw',
-      height: '500px',
-      borderRadius: '16px',
-      marginTop: '40px',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    }}>
+    <Container
+      sx={{
+        backgroundColor: 'whitesmoke',
+        width: { xs: '100 vw', sm: '80vw' },
+        borderRadius: '16px',
+        marginTop: '40px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: { xs: '5px', sm: '20px' }
+      }}>
       <Searcher
         onSubmit={handleUserChange}
       />
-      <h1>{user && user.name}</h1>
+      {!userBeenFound && <Alert severity="error">The user entered does not exist</Alert>}
+      {user && <UserCard user={user} />}
     </Container>
   )
 }
